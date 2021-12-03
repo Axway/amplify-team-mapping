@@ -20,11 +20,11 @@ The program will list all organizations the user is able to see and for each of 
 
 ## Let's try
 
-The script can run either on a Linux machine or under windows cygwin. In both cases, a browser windows will popup for the user to enter hs credentials.
+The script can run either on a Linux machine or under windows Cygwin. In both cases, a browser windows will popup for the user to enter his credentials.
 
 In the script directory you will find the script to run: `createPlatformTeamFromV7Org.sh`
 
-Excecution sample:
+Execution sample:
 
 ```bash
 $ ./createPlatformTeamFromV7Org.sh
