@@ -45,18 +45,11 @@ AXWAY CLI, version 3.1.0
 Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
 
 Launching web browser to login...
-You are logged into a platform account in organization RnD-CB (a1d6e0a8-131f-4c1c-9d47-b4b357d00294) as cbordier@axway.com.
+You are logged into a platform account in organization RnD-CB (a1d6e0a8***********) as cbo@XXXX.
 The current region is set to US.
 
 ORGANIZATION                                  GUID                                  ORG ID
-ΓêÜ RnD-CB                                      a1d6e0a8-131f-4c1c-9d47-b4b357d00294  889336692462686
-  Agent Blitz                                 cb44b368-6950-45c6-8115-1bf8420ff86d  351659748418642
-  Axway                                       a2275336-f9b1-42a5-87a1-8908abf209fb  100094705
-  BPCE_POC_PinkFloyd                          07232eec-9c9b-47c8-ad91-6bd267ca1b63  658444849066458
-  EU org - RnD testing                        c296cce5-6409-4974-9c27-47b4668f32e9  247719145165135
-  Griffin Corp.                               7b782b4c-62e9-4721-b881-b6a5e4610a6f  613867752138776
-  Open Everything Corp                        6afd1b18-f20e-457a-8b04-ec5ba5db4c1e  163827132163160
-  Vertex_Axway                                fc49439b-aa3f-4f77-97ae-6debcb229d57  694315275401389
+RnD-CB                                        a1d6e0a8***********  88933*******
 
 "RND-CB" ROLES          DESCRIPTION             TYPE
   administrator         Administrator           Platform
@@ -67,9 +60,6 @@ ORGANIZATION                                  GUID                              
 
 "RND-CB" TEAMS     GUID                                  ROLE
   Community        d2263946-aa35-4401-9f30-7b4218552560  administrator
-ΓêÜ API Development  d9120f39-88d1-4977-bc56-5dd7d7335a18  administrator
-  External         68769167-ad1f-46ec-b902-0f52906cb1e6  administrator
-  HealthCare       37cea73d-9d63-4a7b-ad69-4b79e8b4a2b7  administrator
 
 This account has been set as the default.
 
@@ -92,41 +82,61 @@ Removing dissabled organizations from the organization list
 100  3372    0  3372    0     0   8086      0 --:--:-- --:--:-- --:--:--  8086
 
 Creating team with description.
-axway team create 889336692462686 API Development --desc API Developement project
+axway team create 88933******* API Development --desc API Development project
 AXWAY CLI, version 3.1.0
 Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
 
-Account:      amplify-cli:cbordier@axway.com
-Organization: RnD-CB (a1d6e0a8-131f-4c1c-9d47-b4b357d00294)
+Account:      amplify-cli:cbo@XXXX
+Organization: RnD-CB (a1d6e0a8***********)
 
 Successfully created team API Development (1e706edc-1417-4d7d-ab54-455883e056a0)
-Creating team without description.
-axway team create 889336692462686 Healthcare
+Tagging the team based on the API Development toggle true
+axway team update 88933******* API Development --tag API development
 AXWAY CLI, version 3.1.0
 Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
 
-Account:      amplify-cli:cbordier@axway.com
-Organization: RnD-CB (a1d6e0a8-131f-4c1c-9d47-b4b357d00294)
+Creating team without description.
+axway team create 88933******* Healthcare
+AXWAY CLI, version 3.1.0
+Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
+
+Account:      amplify-cli:cbo@XXXX
+Organization: RnD-CB (a1d6e0a8***********)
 
 Successfully created team Healthcare (4ba30d10-403d-44bb-a12a-d9d94e60776f)
-Creating team without description.
-axway team create 889336692462686 Conumer1
+Tagging the team based on the API Development toggle true
+axway team update 88933******* Healthcare --tag API development
 AXWAY CLI, version 3.1.0
 Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
 
-Account:      amplify-cli:cbordier@axway.com
-Organization: RnD-CB (a1d6e0a8-131f-4c1c-9d47-b4b357d00294)
-
-Successfully created team Conumer1 (4253fe80-5be7-465f-909d-edb0e298a70e)
 Creating team without description.
-axway team create 889336692462686 BPCE
+axway team create 88933******* Consumer1
 AXWAY CLI, version 3.1.0
 Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
 
-Account:      amplify-cli:cbordier@axway.com
-Organization: RnD-CB (a1d6e0a8-131f-4c1c-9d47-b4b357d00294)
+Account:      amplify-cli:cbo@XXXX
+Organization: RnD-CB (a1d6e0a8***********)
+
+Successfully created team Consumer1 (4253fe80-5be7-465f-909d-edb0e298a70e)
+Tagging the team based on the API Development toggle false
+axway team update 88933******* Consumer1 --tag Consumer
+AXWAY CLI, version 3.1.0
+Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
+
+Creating team without description.
+axway team create 88933******* BPCE
+AXWAY CLI, version 3.1.0
+Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
+
+Account:      amplify-cli:cbo@XXXX
+Organization: RnD-CB (a1d6e0a8***********)
 
 Successfully created team BPCE (ec745a7c-d78e-4161-bd3c-6e29f717cbfd)
+Tagging the team based on the API Development toggle true
+axway team update 88933******* BPCE --tag API development
+AXWAY CLI, version 3.1.0
+Copyright (c) 2018-2021, Axway, Inc. All Rights Reserved.
+
 Done.
 
 ```
