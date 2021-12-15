@@ -16,7 +16,9 @@ The program will first start to login with the Axway CLI to the platform. You ne
 
 Then you will be asked to enter the API Manager configuration (host / port) and the user name and password to connect to API Manager.
 
-The program will list all organizations the user is able to see and for each of them will create a corresponding Amplify team. The name of the team is the organization name and the description of the team is the organization description
+The program will list all organizations the user is able to see and for each of them will create a corresponding Amplify team. The name of the team is the organization name and the description of the team is the organization description.
+
+Then each team will be tagged either with `API development` or `Consumer` based on the corresponding organization attribute: development (true|false).
 
 ## Let's try
 

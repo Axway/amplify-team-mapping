@@ -133,8 +133,7 @@ fi
 
 echo ""
 echo "Creating the teams"
-create_team lbean018.lab.phx.axway.int 8075 DiscoveryAgent DiscoveryAgent $PLATFORM_ORGID
-#create_team $HOST $PORT $USER $PASSWORD $PLATFORM_ORGID
+create_team $HOST $PORT $USER $PASSWORD $PLATFORM_ORGID
 echo "Done."
 
 rm $TEMP_FILE
