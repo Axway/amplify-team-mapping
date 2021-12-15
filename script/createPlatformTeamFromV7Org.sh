@@ -34,13 +34,15 @@ else
 fi
 
 # loop over the result and keep interesting data (name / description)
-cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description}" | while IFS= read -r line ; do
+cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description, development: .development}" | while IFS= read -r line ; do
    # read organizationId
    ORG_ID=$(echo $line | jq -r '.id')
    # read organization name for creating the corresponding team name
    TEAM_NAME=$(echo $line | jq -r '.name')
    # read organization description if exist
    TEAM_DESCRIPTION=$(echo $line | jq -r '.desc')
+   # read organization development boolean
+   ORG_API_DEV=$(echo $line | jq -r '.development')
    
    if [[ "$TEAM_DESCRIPTION" == "null" ]]; then
       echo "Creating team without description."
@@ -53,77 +55,16 @@ cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description}" | while IFS= r
       axway team create $PLATFORM_ORGID "$TEAM_NAME" --desc "$TEAM_DESCRIPTION"
    fi
    
+   echo "Tagging the team based on the API Development toggle value: $ORG_API_DEV"
+   if [ $ORG_API_DEV = true ]; then
+      echo axway team update $PLATFORM_ORGID "$TEAM_NAME" --tag "API development"
+      axway team update $PLATFORM_ORGID "$TEAM_NAME" --tag "API development"
+    else
+      echo axway team update $PLATFORM_ORGID "$TEAM_NAME" --tag "Consumer"
+      axway team update $PLATFORM_ORGID "$TEAM_NAME" --tag "Consumer"
+    fi
 done
 
-
-}
-
-###############################
-# Input parameters:
-# 1- API Manager host
-# 2- API Manager port
-# 3- API Manager username
-# 4- API Manager password
-# 5- Platform Oragnization ID
-###############################
-create_user()
-{
-# map parameters
-HOST=$1
-PORT=$2
-USERNAME=$3
-PASSWORD=$4
-PLATFORM_ORGID=$5
-
-# encode user/password
-AUTH=$(echo -ne "$USERNAME:$PASSWORD" | base64 --wrap 0)
-
-
-# create user?
-curl -k -H "Authorization: Basic $AUTH" https://$HOST:$PORT/api/portal/$APIMANAGER_API_VERSION/users > $TEMP_FILE
-# loop over the result and keep interesting data (login / email / organizationId / role / orgs2Role )
-cat $TEMP_FILE | jq -rc ".[] | {name: .loginName, email: .email, organizationId: .organizationId, role: .role, orgs2Role: .orgs2Role}" | while IFS= read -r line ; do
-   # read organizationId
-   ORG_ID=$(echo $line | jq -r '.organizationId')
-   # read login
-   LOGIN=$(echo $line | jq -r '.loginName')
-   # read email
-   EMAIL=$(echo $line | jq -r '.email')
-   # read role
-   ROLE=$(echo $line | jq -r '.role')
-   # read extra org role
-   EXTRA_ORG_ROLE=$(echo $line | jq -r '.orgs2Role')
-   
-   ORG_NAME=$(getOrganizationName $1 $2 $3 $4 $ORG_ID)
-   echo "Organization found: $ORG_NAME"
-
-   echo "User found: $EMAIL, $ORG_ID, $ROLE, $EXTRA_ORG_ROLE - $ORG_NAME"
-   
-   
-    #axway org user add <org> <email> --role <role>
-	
-	#axway team user add <org> <team> <user> --role <role>
-   
-done
-
-}
-
-getOrganizationName()
-{
-# map parameters
-HOST=$1
-PORT=$2
-USERNAME=$3
-PASSWORD=$4
-V7_ORGID=$5
-
-# encode user/password
-AUTH=$(echo -ne "$USERNAME:$PASSWORD" | base64 --wrap 0)
-
-# create the orgList
-retVal=$(curl -k -H "Authorization: Basic $AUTH" https://$HOST:$PORT/api/portal/$APIMANAGER_API_VERSION/organizations/$V7_ORGID | jq -rc ".name")
-
-echo "$retVal"
 }
 
 #########
@@ -192,9 +133,9 @@ fi
 
 echo ""
 echo "Creating the teams"
-create_team $HOST $PORT $USER $PASSWORD $PLATFORM_ORGID
+create_team lbean018.lab.phx.axway.int 8075 DiscoveryAgent DiscoveryAgent $PLATFORM_ORGID
+#create_team $HOST $PORT $USER $PASSWORD $PLATFORM_ORGID
 echo "Done."
-
 
 rm $TEMP_FILE
 
