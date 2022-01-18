@@ -130,8 +130,7 @@ fi
 echo "All pre-requisites are available" 
 
 echo "Listing organizations..."
-listOrganization lbean018.lab.phx.axway.int 8075 DiscoveryAgent DiscoveryAgent
-#listOrganization $HOST $PORT $USER $PASSWORD 
+listOrganization $HOST $PORT $USER $PASSWORD 
 echo "File creation complete"
 
 echo "Creating the teams"
