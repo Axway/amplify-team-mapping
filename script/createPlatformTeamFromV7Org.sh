@@ -15,7 +15,7 @@ echo "Getting API Manager host and port..."
 read -p "API Manager host name: " HOST
 read -p "API Manager port number: " PORT
 echo "Getting API Manager credentials (ie a user that have API Manager administrator rights)..."
-read -p "Username: " USER
+read -p "Username: " USERNAME
 read -s -p "Password: " PASSWORD
 echo "***************"
 
@@ -130,13 +130,14 @@ fi
 echo "All pre-requisites are available" 
 
 echo "Listing organizations..."
-listOrganization $HOST $PORT $USER $PASSWORD 
+listOrganization lbean018.lab.phx.axway.int 8075 DiscoveryAgent DiscoveryAgent
+#listOrganization $HOST $PORT $USER $PASSWORD 
 echo "File creation complete"
 
 echo "Creating the teams"
 createAmplifyTeam $PLATFORM_ORGID
 echo "Done."
 
-rm $TEMP_FILE
+#rm $TEMP_FILE
 
 exit 0
