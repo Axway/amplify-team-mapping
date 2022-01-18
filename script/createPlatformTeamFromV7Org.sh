@@ -5,18 +5,27 @@ CREATE_TEAM_FROM_DISBALED_ORG=false
 TEMP_FILE=objectListTemp.json
 
 ###############################
-# Input parameters:
-# 1- API Manager host
-# 2- API Manager port
-# 3- API Manager username
-# 4- API Manager password
+# List v7 organization using curl/jq commands
+# Output: file TEMP_FILE containing the organizations
 ###############################
 listOrganization() {
-# map parameters
-HOST=$1
-PORT=$2
-USERNAME=$3
-PASSWORD=$4
+
+echo ""
+echo "Getting API Manager host and port..."
+read -p "API Manager host name: " HOST
+read -p "API Manager port number: " PORT
+echo "Getting API Manager credentials (ie a user that have API Manager administrator rights)..."
+read -p "Username: " USER
+read -s -p "Password: " PASSWORD
+echo "***************"
+
+echo ""
+read -p "Do you want to create team from disabled organization? [y|N]" answer
+if [[ $answer == "y" || $answer == "Y" ]]; then
+    CREATE_TEAM_FROM_DISBALED_ORG=true
+fi
+
+echo ""
 
 # encode user/password
 AUTH=$(echo -ne "$USERNAME:$PASSWORD" | base64 --wrap 0)
@@ -33,17 +42,22 @@ fi
 }
 
 ###############################
-# Input parameters:
-# 1- API Manager host
-# 2- API Manager port
-# 3- API Manager username
-# 4- API Manager password
-# 5- Platform Oragnization ID
+# Input: file TEMP_FILE containing the organizations
+# Output: team created in Amplify
 ###############################
 createAmplifyTeam() {
 
-# map parameters
-PLATFORM_ORGID=$1
+#login to the platform
+echo ""
+echo "Connecting to Amplify platform with Axway CLI"
+axway auth login
+
+# retrieve the organizationId of the connected user
+echo ""
+echo "Retrieving the organization ID..."
+PLATFORM_ORGID=$(axway auth list --json | jq -r '.[0] .org .id')
+
+echo "create Amplify teams..." 
 
 # loop over the result and keep interesting data (name / description)
 cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description, development: .development}" | while IFS= read -r line ; do
@@ -76,6 +90,7 @@ cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description, development: .d
       axway team update $PLATFORM_ORGID "$TEAM_NAME" --tag "Consumer"
     fi
 done
+
 }
 
 #########
@@ -111,38 +126,8 @@ then
     echo "jq could not be found. Please be sure you can run jq command on this machine"
     exit 1
 fi
+
 echo "All pre-requisites are available" 
-
-#login to the platform
-echo ""
-echo "Connecting to Amplify platform with Axway CLI"
-axway auth login
-
-# manage error while login
-
-
-# retrieve the organizationId of the connected user
-echo ""
-echo "Retrieving the organization ID..."
-PLATFORM_ORGID=$(axway auth list --json | jq -r '.[0] .org .id')
-echo "Done"
-
-echo ""
-echo "Getting API Manager host and port..."
-read -p "API Manager host name: " HOST
-read -p "API Manager port number: " PORT
-echo "Getting API Manager credentials (ie a user that have API Manager administrator rights)..."
-read -p "Username: " USER
-read -s -p "Password: " PASSWORD
-echo "***************"
-
-echo ""
-read -p "Do you want to create team from disabled organization? [y|N]" answer
-if [[ $answer == "y" || $answer == "Y" ]]; then
-    CREATE_TEAM_FROM_DISBALED_ORG=true
-fi
-
-echo ""
 
 echo "Listing organizations..."
 listOrganization $HOST $PORT $USER $PASSWORD 
