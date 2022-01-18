@@ -20,6 +20,14 @@ The program will list all organizations the user is able to see and for each of 
 
 Then each team will be tagged either with `API development` or `Consumer` based on the corresponding organization attribute: development (true|false).
 
+**Note**
+
+In case you don't have a machine where the Axway CLI can be run within a graphical environment as well as accessing to the APIM APIs, you can run the script in 2 steps:
+
+* execute the script on the APIM machine after commenting the Axway CLI commands and the _createAmplifyTeam_ procedure. This will produce a file with the organization list (refer to `TEMP_FILE` for the file name).
+* download the produced file on the machine having Axway CLI and the script.
+* execute the script, by commenting the _listOrganization_ and uncommenting the _createAmplifyTeam_ procedure
+
 ## Let's try
 
 The script can run either on a Linux machine or under windows Cygwin. In both cases, a browser windows will popup for the user to enter his credentials.
