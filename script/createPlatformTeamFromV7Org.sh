@@ -10,16 +10,13 @@ TEMP_FILE=objectListTemp.json
 # 2- API Manager port
 # 3- API Manager username
 # 4- API Manager password
-# 5- Platform Oragnization ID
 ###############################
-create_team() {
-
+listOrganization() {
 # map parameters
 HOST=$1
 PORT=$2
 USERNAME=$3
 PASSWORD=$4
-PLATFORM_ORGID=$5
 
 # encode user/password
 AUTH=$(echo -ne "$USERNAME:$PASSWORD" | base64 --wrap 0)
@@ -32,6 +29,21 @@ else
     echo "Reading all organizations"
     curl -k -H "Authorization: Basic $AUTH" https://$HOST:$PORT/api/portal/$APIMANAGER_API_VERSION/organizations > $TEMP_FILE
 fi
+
+}
+
+###############################
+# Input parameters:
+# 1- API Manager host
+# 2- API Manager port
+# 3- API Manager username
+# 4- API Manager password
+# 5- Platform Oragnization ID
+###############################
+createAmplifyTeam() {
+
+# map parameters
+PLATFORM_ORGID=$1
 
 # loop over the result and keep interesting data (name / description)
 cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description, development: .development}" | while IFS= read -r line ; do
@@ -64,7 +76,6 @@ cat $TEMP_FILE | jq -rc ".[] | {name: .name, desc: .description, development: .d
       axway team update $PLATFORM_ORGID "$TEAM_NAME" --tag "Consumer"
     fi
 done
-
 }
 
 #########
@@ -132,8 +143,13 @@ if [[ $answer == "y" || $answer == "Y" ]]; then
 fi
 
 echo ""
+
+echo "Listing organizations..."
+listOrganization $HOST $PORT $USER $PASSWORD 
+echo "File creation complete"
+
 echo "Creating the teams"
-create_team $HOST $PORT $USER $PASSWORD $PLATFORM_ORGID
+createAmplifyTeam $PLATFORM_ORGID
 echo "Done."
 
 rm $TEMP_FILE
